@@ -769,7 +769,7 @@ class HTreeMap<K,V>(
     }
 
     override fun remove(key: Any, value: Any): Boolean {
-        throw UnsupportedOperationException("Remove not supported.")
+        throw UnsupportedOperationException("remove(K,V) not supported.")
     }
 
     override fun removeBoolean(key: K): Boolean {
@@ -960,7 +960,7 @@ class HTreeMap<K,V>(
         }
 
         override fun remove(element: MutableMap.MutableEntry<K, V>): Boolean {
-            throw UnsupportedOperationException("Remove not supported.")
+            throw UnsupportedOperationException("remove(K,V) not supported.")
         }
 
 

@@ -81,7 +81,7 @@ class BTreeMap<K,V>(
 ): DBConcurrentNavigableMap<K,V>,
    BTreeMapJava.ConcurrentNavigableMap2<K,V>
 {
-    override fun remove(key: Any?, value: Any?): Boolean = throw UnsupportedOperationException("Remove not supported.")
+    override fun remove(key: Any?, value: Any?): Boolean = throw UnsupportedOperationException("remove(K,V) not supported.")
 
 
     companion object {
