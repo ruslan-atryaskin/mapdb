@@ -29,7 +29,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class HTreeMapTest extends TestCase
 {
 
-    private final int SIZE = 100;
+    private final int SIZE = 10000;
     private static final String NOT_PRESENT = null;
 
     protected DBConcurrentMap<Integer, String> makeMap()

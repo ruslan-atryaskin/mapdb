@@ -20,17 +20,16 @@
 package org.mapdb;
 
 import junit.framework.TestCase;
-import org.mapdb.tree.HTreeMap;
 
-
-import java.util.*;
-import java.util.concurrent.ConcurrentNavigableMap;
+import java.util.LinkedHashSet;
+import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class BTreeMapTest extends TestCase
 {
 
-    private final int SIZE = 100;
+    private final int SIZE = 10000;
     private static final String NOT_PRESENT = null;
 
     protected DBConcurrentMap<Integer, String> makeMap()
