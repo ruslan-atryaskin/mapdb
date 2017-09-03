@@ -47,7 +47,7 @@ open class DB(
 
     companion object{
 
-        protected val NAME_CATALOG_SERIALIZER:Serializer<SortedMap<String, String>> = object:Serializer<SortedMap<String, String>>{
+        protected val NAME_CATALOG_SERIALIZER:Serializer<SortedMap<String, String>> = object:Serializer<SortedMap<String, String>>(){
 
             override fun deserialize(input: DataInput2, available: Int): SortedMap<String, String>? {
                 val size = input.unpackInt()
@@ -277,7 +277,7 @@ open class DB(
 
     }
 
-    protected val classInfoSerializer = object : Serializer<Array<ClassInfo>> {
+    protected val classInfoSerializer = object : Serializer<Array<ClassInfo>>() {
 
         override fun serialize(out: DataOutput2, ci: Array<ClassInfo>) {
             out.packInt(ci.size)
@@ -695,9 +695,7 @@ open class DB(
                     if (!triggered && newVal == null && oldVal != null) {
                         //removal, also remove from overflow map
                         val oldVal2 = expireOverflow.remove(key)
-                        if (oldVal2 != null && _valueSerializer.equals(oldVal, oldVal2)) {
-                            Utils.LOG.warning { "Key also removed from overflow Map, but value in overflow Map differs" }
-                        }
+
                     } else if (triggered && newVal == null) {
                         // triggered by eviction, put evicted entry into overflow map
                         expireOverflow.put(key, oldVal)
@@ -1124,8 +1122,7 @@ open class DB(
 
          @Suppress("UNCHECKED_CAST")
          protected var _keySerializer:GroupSerializer<K> = db.defaultSerializer as GroupSerializer<K>
-         protected var _valueSerializer:GroupSerializer<V> =
-                 GroupSerializerWrapper.wrap(if(hasValues) db.defaultSerializer else BTreeMap.NO_VAL_SERIALIZER)
+         protected var _valueSerializer:GroupSerializer<V> = GroupSerializerWrapper.wrap(if(hasValues) db.defaultSerializer else BTreeMap.NO_VAL_SERIALIZER)
 
          protected var _maxNodeSize = CC.BTREEMAP_MAX_NODE_SIZE
          protected var _counterEnable: Boolean = false

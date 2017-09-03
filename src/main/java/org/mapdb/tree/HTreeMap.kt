@@ -11,7 +11,7 @@ import java.io.Closeable
 import java.security.SecureRandom
 import java.util.*
 import java.util.concurrent.*
-import java.util.function.BiConsumer
+
 
 /**
  * Concurrent HashMap which uses IndexTree for hash table
@@ -160,14 +160,10 @@ class HTreeMap<K,V>(
             }
         }
 
-        //check if 32bit hash covers all indexes. In future we will upgrade to 64bit hash and this can be removed
-        if(segmentCount*Math.pow(1.shl(dirShift).toDouble(),levels.toDouble()) > 2L*Integer.MAX_VALUE+1000){
-            Utils.LOG.warning { "Wrong layout, segment+index is more than 32bits, performance degradation" }
-        }
     }
 
 
-    private fun leafValueInlineSerializer() = object: Serializer<Array<Any>>{
+    private fun leafValueInlineSerializer() = object: Serializer<Array<Any>>(){
         override fun serialize(out: DataOutput2, value: kotlin.Array<Any>) {
             out.packInt(value.size)
             for(i in 0 until value.size step 3) {
@@ -196,7 +192,7 @@ class HTreeMap<K,V>(
         }
     }
 
-    private fun leafKeySetSerializer() = object: Serializer<Array<Any>>{
+    private fun leafKeySetSerializer() = object: Serializer<Array<Any>>(){
         override fun serialize(out: DataOutput2, value: kotlin.Array<Any>) {
             out.packInt(value.size)
             for(i in 0 until value.size step 3) {
@@ -225,7 +221,7 @@ class HTreeMap<K,V>(
 
 
 
-    private fun leafValueExternalSerializer() = object: Serializer<Array<Any>>{
+    private fun leafValueExternalSerializer() = object: Serializer<Array<Any>>(){
         override fun serialize(out: DataOutput2, value: Array<Any>) {
             out.packInt(value.size)
             for(i in 0 until value.size step 3) {
@@ -772,24 +768,8 @@ class HTreeMap<K,V>(
         }
     }
 
-    override fun remove(key: K, value: V): Boolean {
-        if(key == null || value==null)
-            throw NullPointerException()
-
-        val hash = hash(key)
-        val segment = hashToSegment(hash)
-        locks.lockWrite( segment) {
-            if(isForegroundEviction)
-                expireEvictSegment(segment)
-
-            val oldValue = getprotected(hash, key, updateQueue = false)
-            if (oldValue != null && valueSerializer.equals(oldValue, value)) {
-                removeProtected(hash, key, evicted = false, retTrue = false)
-                return true
-            } else {
-                return false
-            }
-        }
+    override fun remove(key: Any, value: Any): Boolean {
+        throw UnsupportedOperationException("Remove not supported.")
     }
 
     override fun removeBoolean(key: K): Boolean {
@@ -980,7 +960,7 @@ class HTreeMap<K,V>(
         }
 
         override fun remove(element: MutableMap.MutableEntry<K, V>): Boolean {
-            return this@HTreeMap.remove(element.key, element.value)
+            throw UnsupportedOperationException("Remove not supported.")
         }
 
 
@@ -1014,9 +994,6 @@ class HTreeMap<K,V>(
         override val isThreadSafe: Boolean
             get() = map.isThreadSafe
 
-        override fun spliterator(): Spliterator<K> {
-            return super<AbstractSet>.spliterator()
-        }
 
         override fun iterator(): MutableIterator<K?> {
             val iters = (0 until map.segmentCount).map{segment->
@@ -1267,22 +1244,7 @@ class HTreeMap<K,V>(
         else return stores[segment].put(value, valueSerializer)
     }
 
-    override fun forEach(action: BiConsumer<in K, in V>) {
-        for(segment in 0 until segmentCount){
-            segmentRead(segment){
-                val store = stores[segment]
-                indexTrees[segment].forEachValue { leafRecid ->
-                    val leaf = leafGet(store, leafRecid)
-                    for(i in 0 until leaf.size step 3){
-                        @Suppress("UNCHECKED_CAST")
-                        val key = leaf[i] as K
-                        val value = valueUnwrap(segment, leaf[i+1])
-                        action.accept(key, value)
-                    }
-                }
-            }
-        }
-    }
+
 
     override fun forEachKey(procedure:  (K)->Unit) {
         for(segment in 0 until segmentCount){

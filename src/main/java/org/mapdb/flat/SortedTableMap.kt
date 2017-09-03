@@ -11,7 +11,6 @@ import java.util.*
 import java.util.concurrent.ConcurrentMap
 import java.util.concurrent.ConcurrentNavigableMap
 import java.util.concurrent.ConcurrentSkipListMap
-import java.util.function.BiConsumer
 
 /**
  * Read only Sorted Table Map. It stores data in table and uses binary search to find records
@@ -727,7 +726,7 @@ class SortedTableMap<K,V>(
         throw UnsupportedOperationException("read-only")
     }
 
-    override fun remove(key: K, value: V): Boolean {
+    override fun remove(key: Any?, value: Any?): Boolean {
         throw UnsupportedOperationException("read-only")
     }
 
@@ -2211,13 +2210,6 @@ class SortedTableMap<K,V>(
     }
 
 
-    override fun forEach(action: BiConsumer<in K, in V>){
-        //TODO PERF optimize forEach traversal
-        for(e in entries){
-            action.accept(e.key, e.value)
-        }
-    }
-
     override fun isClosed(): Boolean {
         return volume.isClosed
     }
@@ -2235,7 +2227,7 @@ class SortedTableMap<K,V>(
     @Throws(ObjectStreamException::class)
     private fun writeReplace(): Any {
         val ret = ConcurrentSkipListMap<Any?, Any?>()
-        forEach { k, v ->
+        forEach { (k, v) ->
             ret.put(k, v)
         }
         return ret
@@ -2243,7 +2235,7 @@ class SortedTableMap<K,V>(
 
     override fun verify(){
         //TODO verification
-        var count:Long = keys.fold(0L, {acc, e-> acc+1})
+        var count:Long = keys.fold(0L, {acc, _-> acc+1})
         assert(sizeLong == count)
     }
 }

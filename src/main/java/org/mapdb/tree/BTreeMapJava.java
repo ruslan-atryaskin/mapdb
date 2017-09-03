@@ -135,7 +135,7 @@ public class BTreeMapJava {
         }
     }
 
-    public static class NodeSerializer implements Serializer<Node> {
+    public static class NodeSerializer extends Serializer<Node> {
 
         final GroupSerializer keySerializer;
         final Comparator comparator;
@@ -565,12 +565,6 @@ public class BTreeMapJava {
         @Override
         public void verify() {
 
-        }
-
-        @NotNull
-        @Override
-        public Spliterator<E> spliterator() {
-            return super.spliterator();
         }
 
         @Override

@@ -11,7 +11,7 @@ import java.util.Comparator;
 /**
  * Created by jan on 2/28/16.
  */
-public class SerializerByteArrayNoSize implements Serializer<byte[]> {
+public class SerializerByteArrayNoSize extends Serializer<byte[]> {
 
     @Override
     public void serialize(DataOutput2 out, byte[] value) throws IOException {

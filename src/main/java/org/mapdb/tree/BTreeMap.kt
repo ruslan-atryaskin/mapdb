@@ -13,7 +13,6 @@ import java.io.*
 import java.util.*
 import java.util.concurrent.*
 import java.util.concurrent.locks.LockSupport
-import java.util.function.BiConsumer
 
 /**
  * A scalable concurrent {@link ConcurrentNavigableMap} implementation.
@@ -82,6 +81,7 @@ class BTreeMap<K,V>(
 ): DBConcurrentNavigableMap<K,V>,
    BTreeMapJava.ConcurrentNavigableMap2<K,V>
 {
+    override fun remove(key: Any?, value: Any?): Boolean = throw UnsupportedOperationException("Remove not supported.")
 
 
     companion object {
@@ -126,7 +126,7 @@ class BTreeMap<K,V>(
         }
 
 
-        internal val NO_VAL_SERIALIZER = object: GroupSerializer<Boolean>{
+        internal val NO_VAL_SERIALIZER = object: GroupSerializer<Boolean>(){
 
             override fun valueArrayCopyOfRange(vals: Any?, from: Int, to: Int): Int? {
                 return to-from;
@@ -891,12 +891,6 @@ class BTreeMap<K,V>(
         if (key == null || value == null)
             throw NullPointerException()
         return put2(key, value, true, false) as V?
-    }
-
-    override fun remove(key: K, value: V): Boolean {
-        if (key == null || value == null)
-            throw NullPointerException()
-        return removeOrReplace(key, value, null, false) != null
     }
 
     override fun removeBoolean(key: K): Boolean {
@@ -1802,23 +1796,6 @@ class BTreeMap<K,V>(
         return store.isClosed
     }
 
-    override fun forEach(action: BiConsumer<in K, in V>){
-        var node = getNode(leftEdges.first)
-        while (true) {
-            val limit = keySerializer.valueArraySize(node.keys) - 1 + node.intRightEdge() + node.intLastKeyTwice()
-            for (i in 1 - node.intLeftEdge() until limit) {
-                val key = keySerializer.valueArrayGet(node.keys, i)
-                val value = valueExpand(valueNodeSerializer.valueArrayGet(node.values, i - 1 + node.intLeftEdge()))
-                if(value!=null)
-                    action.accept(key, value)
-            }
-
-            if (node.isRightEdge)
-                return
-            node = getNode(node.link)
-        }
-    }
-
     override fun forEachKey(procedure: (K) -> Unit) {
         var node = getNode(leftEdges.first)
         while (true) {
@@ -1856,7 +1833,7 @@ class BTreeMap<K,V>(
     @Throws(ObjectStreamException::class)
     private fun writeReplace(): Any {
         val ret = ConcurrentSkipListMap<Any?, Any?>()
-        forEach { k, v ->
+        forEach { (k, v) ->
             ret.put(k, v)
         }
         return ret

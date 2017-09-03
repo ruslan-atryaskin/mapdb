@@ -4,7 +4,6 @@ import org.mapdb.tree.BTreeMapJava
 import java.io.Closeable
 import java.util.*
 import java.util.concurrent.*
-import java.util.function.BiConsumer
 
 /**
  * Extra methods for Map interface
@@ -68,8 +67,6 @@ interface DBConcurrentMap<K, V> : ConcurrentMap<K, V>,
 
     fun forEachValue(procedure: (V)->Unit);
 
-    override fun forEach(action: BiConsumer<in K, in V>);
-
     val keySerializer:Serializer<K>
 
     val valueSerializer:Serializer<V>
@@ -132,8 +129,5 @@ interface DBSet<E> : java.util.Set<E>,
 
 interface DBNavigableSet<E> : DBSet<E>, java.util.NavigableSet<E>{
 
-    override fun spliterator(): Spliterator<E> {
-        return Spliterators.spliteratorUnknownSize<E>(iterator(), 0)
-    }
 
 }
