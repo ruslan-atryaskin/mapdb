@@ -1,32 +1,42 @@
 package org.mapdb.serializer;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-
+import net.jpountz.lz4.LZ4Compressor;
+import net.jpountz.lz4.LZ4Factory;
+import net.jpountz.lz4.LZ4FastDecompressor;
 import org.mapdb.DataInput2;
 import org.mapdb.DataOutput2;
 import org.mapdb.Serializer;
 import org.nustaq.serialization.FSTConfiguration;
 
-import net.jpountz.lz4.LZ4Compressor;
-import net.jpountz.lz4.LZ4Factory;
-import net.jpountz.lz4.LZ4FastDecompressor;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 public class SerializerFSTLZ4<T> extends Serializer<T> {
 
-	public static final int SIZE_OF_INT = 4;
+	private static final int SIZE_OF_INT = 4;
 
-	public static final FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration();
-    public static final LZ4Factory factory = LZ4Factory.fastestInstance();
-	public static final LZ4Compressor compressor = factory.fastCompressor();
-	public static final LZ4FastDecompressor decompressor = factory.fastDecompressor();
+	private FSTConfiguration conf;
+    private LZ4Factory factory;
+	private LZ4Compressor compressor;
+	private LZ4FastDecompressor decompressor;
 
 	private int sizeLimitBeforeCompression;
 
-	public SerializerFSTLZ4(int sizeLimitBeforeCompression) {
-		this.sizeLimitBeforeCompression = sizeLimitBeforeCompression;
-	}
+    public SerializerFSTLZ4(int sizeLimitBeforeCompression) {
+        this.sizeLimitBeforeCompression = sizeLimitBeforeCompression;
+        conf = FSTConfiguration.createDefaultConfiguration();
+        factory = LZ4Factory.fastestInstance();
+        compressor = factory.fastCompressor();
+        decompressor = factory.fastDecompressor();
+    }
+    public SerializerFSTLZ4(int sizeLimitBeforeCompression, int compressionLevel) {
+        this.sizeLimitBeforeCompression = sizeLimitBeforeCompression;
+        conf = FSTConfiguration.createDefaultConfiguration();
+        factory = LZ4Factory.fastestInstance();
+        compressor = factory.highCompressor(compressionLevel);
+        decompressor = factory.fastDecompressor();
+    }
 
 	public byte[] object2Bytes(T obj) {
 		byte[] data = conf.asByteArray(obj);
