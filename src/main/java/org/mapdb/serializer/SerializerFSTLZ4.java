@@ -31,26 +31,26 @@ public class SerializerFSTLZ4<T> extends Serializer<T> {
 	public byte[] object2Bytes(T obj) {
 		byte[] data = conf.asByteArray(obj);
 		if (data.length < sizeLimitBeforeCompression) {
-			return object2NonCompressedBytes(data);
+			return createNonCompressedByteArray(data);
 		}
 		final int decompressedLength = data.length;
 		int maxCompressedLength = compressor.maxCompressedLength(decompressedLength);
 		byte[] compressed = new byte[maxCompressedLength];
 		int compressedLength = compressor.compress(data, 0, decompressedLength, compressed, 0, maxCompressedLength);
 		if (compressedLength + SIZE_OF_INT >= decompressedLength) {
-			return object2NonCompressedBytes(data);
+			return createNonCompressedByteArray(data);
 		}
-		return object2CompressedBytes(decompressedLength, compressed, compressedLength);
+		return createCompressedByteArray(decompressedLength, compressed, compressedLength);
 	}
 
-	private static byte[] object2CompressedBytes(final int decompressedLength, byte[] compressed, int compressedLength) {
+	private static byte[] createCompressedByteArray(final int decompressedLength, byte[] compressed, int compressedLength) {
 		ByteBuffer buffer = ByteBuffer.allocate(compressedLength + SIZE_OF_INT);
 		buffer.putInt(decompressedLength);
 		buffer.put(Arrays.copyOf(compressed, compressedLength));
 		return buffer.array();
 	}
 
-	private static byte[] object2NonCompressedBytes(byte[] data) {
+	private static byte[] createNonCompressedByteArray(byte[] data) {
 		ByteBuffer buffer = ByteBuffer.allocate(data.length + SIZE_OF_INT);
 		buffer.putInt(-data.length);
 		buffer.put(data);
