@@ -34,7 +34,7 @@ public class BTreeMapTest extends TestCase
 
     protected DBConcurrentMap<Integer, String> makeMap()
     {
-        return DBMaker.memoryDB().make().treeMap("map", Serializer.INTEGER, Serializer.STRING).createOrOpen();
+        return DBMaker.memoryDB().make().treeMap("map", Serializer.INTEGER, Serializer.STRING).counterEnable().createOrOpen();
     }
 
     /**
