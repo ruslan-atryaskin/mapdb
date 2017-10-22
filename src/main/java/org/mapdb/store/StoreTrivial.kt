@@ -412,10 +412,10 @@ class StoreTrivialTx(val file:File, isThreadSafe:Boolean=true, val deleteFilesAf
 
         val name = path.fileName!!.toString()
 
-        for(child in Files.list(path.parent)){
-            if(!Files.isRegularFile(child))
+        for(child in path.parent.toFile().listFiles()){
+            if(!Files.isRegularFile(child.toPath()))
                 continue
-            val cname = child.fileName!!.toString()
+            val cname = child.toPath().fileName!!.toString()
             if(!cname.startsWith(name))
                 continue
             if(!cname.endsWith(COMMIT_MARKER_SUFFIX))

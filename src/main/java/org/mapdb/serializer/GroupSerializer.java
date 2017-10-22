@@ -18,9 +18,9 @@ import java.util.Comparator;
  * GroupSerializer might also compress serialized data.
  * For example sorted data can be efficiently compressed with delta compression.
  */
-public interface GroupSerializer<A> extends Serializer<A> {
+public abstract class GroupSerializer<A> extends Serializer<A> {
 
-    default A valueArrayBinaryGet(DataInput2 input, int keysLen, int pos) throws IOException {
+    public A valueArrayBinaryGet(DataInput2 input, int keysLen, int pos) throws IOException {
         Object keys = valueArrayDeserialize(input, keysLen);
         return valueArrayGet(keys, pos);
 //        A a=null;
@@ -32,7 +32,7 @@ public interface GroupSerializer<A> extends Serializer<A> {
 
 
 
-    default int valueArrayBinarySearch(A key, DataInput2 input, int keysLen, Comparator comparator) throws IOException {
+    public int valueArrayBinarySearch(A key, DataInput2 input, int keysLen, Comparator comparator) throws IOException {
         Object keys = valueArrayDeserialize(input, keysLen);
         return valueArraySearch(keys, key, comparator);
 //        for(int pos=0; pos<keysLen; pos++){
@@ -47,32 +47,32 @@ public interface GroupSerializer<A> extends Serializer<A> {
     }
 
 
-    int valueArraySearch(Object keys, A key);
+    public abstract int valueArraySearch(Object keys, A key);
 
-    int valueArraySearch(Object keys, A key, Comparator comparator);
+    public abstract int valueArraySearch(Object keys, A key, Comparator comparator);
 
-    void valueArraySerialize(DataOutput2 out, Object vals) throws IOException;
+    public abstract void valueArraySerialize(DataOutput2 out, Object vals) throws IOException;
 
-    Object valueArrayDeserialize(DataInput2 in, int size) throws IOException;
+    public abstract Object valueArrayDeserialize(DataInput2 in, int size) throws IOException;
 
-    A valueArrayGet(Object vals, int pos);
+    public abstract A valueArrayGet(Object vals, int pos);
 
-    int valueArraySize(Object vals);
+    public abstract int valueArraySize(Object vals);
 
-    Object valueArrayEmpty();
+    public abstract Object valueArrayEmpty();
 
-    Object valueArrayPut(Object vals, int pos, A newValue);
+    public abstract Object valueArrayPut(Object vals, int pos, A newValue);
 
 
-    Object valueArrayUpdateVal(Object vals, int pos, A newValue);
+    public abstract Object valueArrayUpdateVal(Object vals, int pos, A newValue);
 
-    Object valueArrayFromArray(Object[] objects);
+    public abstract Object valueArrayFromArray(Object[] objects);
 
-    Object valueArrayCopyOfRange(Object vals, int from, int to);
+    public abstract Object valueArrayCopyOfRange(Object vals, int from, int to);
 
-    Object valueArrayDeleteValue(Object vals, int pos);
+    public abstract Object valueArrayDeleteValue(Object vals, int pos);
 
-    default Object[] valueArrayToArray(Object vals){
+    public Object[] valueArrayToArray(Object vals){
         Object[] ret = new Object[valueArraySize(vals)];
         for(int i=0;i<ret.length;i++){
             ret[i] = valueArrayGet(vals,i);
@@ -82,7 +82,7 @@ public interface GroupSerializer<A> extends Serializer<A> {
 
 
     /** returns value+1, or null if there is no bigger value. */
-    default A nextValue(A value){
+    public A nextValue(A value){
         throw new UnsupportedOperationException("Next Value not supported");
     }
 

@@ -36,7 +36,7 @@ import java.util.*;
  * @author Jan Kotek
  */
 //TODO annotate static serializers as non nullable
-public interface Serializer<A /*extends Comparable<? super A>*/> extends Comparator<A> {
+public abstract class Serializer<A /*extends Comparable<? super A>*/> implements Comparator<A> {
 
     /**
      * A predefined {@link Serializer} that handles non-null
@@ -45,7 +45,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      * If a {@code null} value is passed to the Serializer, a
      * {@link NullPointerException} will be thrown.
      */
-    GroupSerializer<Character> CHAR = new SerializerChar();
+    public static final GroupSerializer<Character> CHAR = new SerializerChar();
 
     /**
      * A predefined {@link Serializer} that handles non-null
@@ -61,7 +61,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      *
      * @see Serializer#STRING
      */
-    GroupSerializer<String> STRING_ORIGHASH = new SerializerStringOrigHash();
+    public static final GroupSerializer<String> STRING_ORIGHASH = new SerializerStringOrigHash();
 
     /**
      * A predefined {@link Serializer} that handles non-null
@@ -77,7 +77,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      *
      * @see Serializer#STRING_ORIGHASH
      */
-    GroupSerializer<String> STRING = new SerializerString();
+    public static final GroupSerializer<String> STRING = new SerializerString();
 
     /**
      * A predefined {@link Serializer} that handles non-null
@@ -94,7 +94,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      *
      * @see Serializer#STRING
      */
-    GroupSerializer<String> STRING_DELTA = new SerializerStringDelta();
+    public static final GroupSerializer<String> STRING_DELTA = new SerializerStringDelta();
 
     /**
      * A predefined {@link Serializer} that handles non-null
@@ -111,7 +111,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      *
      * @see Serializer#STRING
      */
-    GroupSerializer<String> STRING_DELTA2 = new SerializerStringDelta2();
+    public static final GroupSerializer<String> STRING_DELTA2 = new SerializerStringDelta2();
 
     /**
      * A predefined {@link Serializer} that handles non-null
@@ -131,7 +131,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      *
      * @see Serializer#STRING
      */
-    GroupSerializer<String> STRING_INTERN = new SerializerStringIntern();
+    public static final GroupSerializer<String> STRING_INTERN = new SerializerStringIntern();
 
     /**
      * A predefined {@link Serializer} that handles non-null
@@ -148,7 +148,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      *
      * @see Serializer#STRING_ORIGHASH
      */
-    GroupSerializer<String> STRING_ASCII = new SerializerStringAscii();
+    public static final GroupSerializer<String> STRING_ASCII = new SerializerStringAscii();
 
     /**
      * A predefined {@link Serializer} that handles non-null
@@ -164,7 +164,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      *
      * @see Serializer#STRING_ORIGHASH
      */
-    Serializer<String> STRING_NOSIZE = new SerializerStringNoSize();
+    public static final Serializer<String> STRING_NOSIZE = new SerializerStringNoSize();
 
     /**
      * A predefined {@link Serializer} that handles non-null {@link Long Longs}
@@ -179,7 +179,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      * {@link NullPointerException} will be thrown.
      *
      */
-    GroupSerializer<Long> LONG = new SerializerLong();
+    public static final GroupSerializer<Long> LONG = new SerializerLong();
 
     /**
      * A predefined {@link Serializer} that handles non-null {@link Long Longs}
@@ -197,7 +197,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      * {@link NullPointerException} will be thrown.
      *
      */
-    GroupSerializer<Long> LONG_PACKED = new SerializerLongPacked();
+    public static final GroupSerializer<Long> LONG_PACKED = new SerializerLongPacked();
 
     /**
      * A predefined {@link Serializer} that handles non-null {@link Long Longs}
@@ -215,7 +215,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      * {@link NullPointerException} will be thrown.
      *
      */
-    GroupSerializer<Long> LONG_DELTA = new SerializerLongDelta();
+    public static final GroupSerializer<Long> LONG_DELTA = new SerializerLongDelta();
 
     /**
      * A predefined {@link Serializer} that handles non-null
@@ -229,7 +229,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      * {@link NullPointerException} will be thrown.
      *
      */
-    GroupSerializer<Integer> INTEGER = new SerializerInteger();
+    public static final GroupSerializer<Integer> INTEGER = new SerializerInteger();
 
     /**
      * A predefined {@link Serializer} that handles non-null
@@ -247,7 +247,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      * {@link NullPointerException} will be thrown.
      *
      */
-    GroupSerializer<Integer> INTEGER_PACKED = new SerializerIntegerPacked();
+    public static final GroupSerializer<Integer> INTEGER_PACKED = new SerializerIntegerPacked();
 
     /**
      * A predefined {@link Serializer} that handles non-null
@@ -265,7 +265,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      * {@link NullPointerException} will be thrown.
      *
      */
-    GroupSerializer<Integer> INTEGER_DELTA = new SerializerIntegerDelta();
+    public static final GroupSerializer<Integer> INTEGER_DELTA = new SerializerIntegerDelta();
 
     /**
      * A predefined {@link Serializer} that handles non-null
@@ -276,7 +276,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      * {@link NullPointerException} will be thrown.
      *
      */
-    GroupSerializer<Boolean> BOOLEAN = new SerializerBoolean();
+    public static final GroupSerializer<Boolean> BOOLEAN = new SerializerBoolean();
 
     /**
      * A predefined {@link Serializer} that handles non-null {@link Long Longs}
@@ -287,7 +287,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      * {@link NullPointerException} will be thrown.
      *
      */
-    GroupSerializer<Long> RECID = new SerializerRecid();
+    public static final GroupSerializer<Long> RECID = new SerializerRecid();
 
     /**
      * A predefined {@link Serializer} that handles non-null arrays of longs
@@ -301,7 +301,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      * Serializer, a {@link NullPointerException} will be thrown.
      *
      */
-    GroupSerializer<long[]> RECID_ARRAY = new SerializerRecidArray();
+    public static final GroupSerializer<long[]> RECID_ARRAY = new SerializerRecidArray();
 
     /**
      * A predefined {@link Serializer} that always throws an
@@ -309,42 +309,42 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      * <p>
      * This serializer can be used for testing and assertions.
      */
-    GroupSerializer<Object> SERIALIZER_UNSUPPORTED = new SerializerUnsupported();
+    public static final GroupSerializer<Object> SERIALIZER_UNSUPPORTED = new SerializerUnsupported();
 
     /**
      * Serializes {@code byte[]} it adds header which contains size information
      */
-    GroupSerializer<byte[]> BYTE_ARRAY = new SerializerByteArray();
+    public static final GroupSerializer<byte[]> BYTE_ARRAY = new SerializerByteArray();
 
-    GroupSerializer<byte[]> BYTE_ARRAY_DELTA = new SerializerByteArrayDelta();
-    GroupSerializer<byte[]> BYTE_ARRAY_DELTA2 = new SerializerByteArrayDelta2();
+    public static final GroupSerializer<byte[]> BYTE_ARRAY_DELTA = new SerializerByteArrayDelta();
+    public static final GroupSerializer<byte[]> BYTE_ARRAY_DELTA2 = new SerializerByteArrayDelta2();
 
     /**
      * Serializes {@code byte[]} directly into underlying store It does not
      * store size, so it can not be used in Maps and other collections.
      */
-    Serializer<byte[]> BYTE_ARRAY_NOSIZE = new SerializerByteArrayNoSize();
+    public static final Serializer<byte[]> BYTE_ARRAY_NOSIZE = new SerializerByteArrayNoSize();
 
     /**
      * Serializes {@code char[]} it adds header which contains size information
      */
-    GroupSerializer<char[]> CHAR_ARRAY = new SerializerCharArray();
+    public static final GroupSerializer<char[]> CHAR_ARRAY = new SerializerCharArray();
 
     /**
      * Serializes {@code int[]} it adds header which contains size information
      */
-    GroupSerializer<int[]> INT_ARRAY = new SerializerIntArray();
+    public static final GroupSerializer<int[]> INT_ARRAY = new SerializerIntArray();
 
     /**
      * Serializes {@code long[]} it adds header which contains size information
      */
-    GroupSerializer<long[]> LONG_ARRAY = new SerializerLongArray();
+    public static final GroupSerializer<long[]> LONG_ARRAY = new SerializerLongArray();
 
     /**
      * Serializes {@code double[]} it adds header which contains size
      * information
      */
-    GroupSerializer<double[]> DOUBLE_ARRAY = new SerializerDoubleArray();
+    public static final GroupSerializer<double[]> DOUBLE_ARRAY = new SerializerDoubleArray();
 
     /**
      * A predefined {@link Serializer} that handles non-null
@@ -360,14 +360,14 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      *
      * @see java.io.Serializable
      */
-    GroupSerializer JAVA = new SerializerJava();
+    public static final GroupSerializer JAVA = new SerializerJava();
 
-    GroupSerializer ELSA = new SerializerElsa();
+    public static final GroupSerializer ELSA = new SerializerElsa();
 
     /**
      * Serializers {@link java.util.UUID} class
      */
-    GroupSerializer<java.util.UUID> UUID = new SerializerUUID();
+    public static final GroupSerializer<java.util.UUID> UUID = new SerializerUUID();
 
     /**
      * A predefined {@link Serializer} that handles non-null {@link Byte Bytes}
@@ -380,7 +380,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      * {@link NullPointerException} will be thrown.
      *
      */
-    GroupSerializer<Byte> BYTE = new SerializerByte();
+    public static final GroupSerializer<Byte> BYTE = new SerializerByte();
 
     /**
      * A predefined {@link Serializer} that handles non-null
@@ -395,7 +395,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      * {@link NullPointerException} will be thrown.
      *
      */
-    GroupSerializer<Float> FLOAT = new SerializerFloat();
+    public static final GroupSerializer<Float> FLOAT = new SerializerFloat();
 
     /**
      * A predefined {@link Serializer} that handles non-null
@@ -410,7 +410,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      * {@link NullPointerException} will be thrown.
      *
      */
-    GroupSerializer<Double> DOUBLE = new SerializerDouble();
+    public static final GroupSerializer<Double> DOUBLE = new SerializerDouble();
 
     /**
      * A predefined {@link Serializer} that handles non-null
@@ -425,10 +425,10 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      * {@link NullPointerException} will be thrown.
      *
      */
-    GroupSerializer<Short> SHORT = new SerializerShort();
+    public static final GroupSerializer<Short> SHORT = new SerializerShort();
 
 // TODO boolean array
-//    GroupSerializer<boolean[]> BOOLEAN_ARRAY = new GroupSerializer<boolean[]>() {
+//    public static final GroupSerializer<boolean[]> BOOLEAN_ARRAY = new GroupSerializer<boolean[]>() {
 //        @Override
 //        public void serialize(DataOutput2 out, boolean[] value) throws IOException {
 //            out.packInt( value.length);//write the number of booleans not the number of bytes
@@ -456,23 +456,23 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
 //            return Arrays.hashCode(booleans);
 //        }
 //    };
-    GroupSerializer<short[]> SHORT_ARRAY = new SerializerShortArray();
+    public static final GroupSerializer<short[]> SHORT_ARRAY = new SerializerShortArray();
 
-    GroupSerializer<float[]> FLOAT_ARRAY = new SerializerFloatArray();
+    public static final GroupSerializer<float[]> FLOAT_ARRAY = new SerializerFloatArray();
 
-    GroupSerializer<BigInteger> BIG_INTEGER = new SerializerBigInteger();
+    public static final GroupSerializer<BigInteger> BIG_INTEGER = new SerializerBigInteger();
 
-    GroupSerializer<BigDecimal> BIG_DECIMAL = new SerializerBigDecimal();
+    public static final GroupSerializer<BigDecimal> BIG_DECIMAL = new SerializerBigDecimal();
 
-    GroupSerializer<Class<?>> CLASS = new SerializerClass();
+    public static final GroupSerializer<Class<?>> CLASS = new SerializerClass();
 
-    GroupSerializer<Date> DATE = new SerializerDate();
+    public static final GroupSerializer<Date> DATE = new SerializerDate();
     
-    GroupSerializer<java.sql.Date> SQL_DATE = new SerializerSqlDate();
+    public static final GroupSerializer<java.sql.Date> SQL_DATE = new SerializerSqlDate();
     
-    GroupSerializer<java.sql.Time> SQL_TIME = new SerializerSqlTime();
+    public static final GroupSerializer<java.sql.Time> SQL_TIME = new SerializerSqlTime();
     
-    GroupSerializer<java.sql.Timestamp> SQL_TIMESTAMP = new SerializerSqlTimestamp();
+    public static final GroupSerializer<java.sql.Timestamp> SQL_TIMESTAMP = new SerializerSqlTimestamp();
 
     //    //this has to be lazily initialized due to circular dependencies
 //    static final  class __BasicInstance {
@@ -485,7 +485,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
 //     * It does not handle custom POJO classes. It also does not handle classes which
 //     * require access to {@code DB} itself.
 //     */
-//    GroupSerializer<Object> BASIC = new GroupSerializer<Object>(){
+//    public static final GroupSerializer<Object> BASIC = new GroupSerializer<Object>(){
 //
 //        @Override
 //        public void serialize(DataOutput2 out, Object value) throws IOException {
@@ -512,7 +512,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      *
      * @throws IOException in case of an I/O error
      */
-    void serialize(@NotNull DataOutput2 out, @NotNull A value) throws IOException;
+   public abstract void serialize(@NotNull DataOutput2 out, @NotNull A value) throws IOException;
 
     /**
      * Deserializes and returns the content of the given {@link DataInput2}.
@@ -524,7 +524,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      * @return the de-serialized content of the given {@link DataInput2}
      * @throws IOException in case of an I/O error
      */
-    A deserialize(@NotNull DataInput2 input, int available) throws IOException;
+    public abstract A deserialize(@NotNull DataInput2 input, int available) throws IOException;
 
     /**
      * Returns the fixed size of the serialized form in bytes or -1 if the size
@@ -535,7 +535,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      * @return the fixed size of the serialized form in bytes or -1 if the size
      * is not fixed
      */
-    default int fixedSize() {
+    public int fixedSize() {
         return -1;
     }
 
@@ -561,12 +561,12 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      * @return if this Serializer is trusted to always read the same number of
      * bytes as it writes for any given object being serialized/de-serialized
      */
-    default boolean isTrusted() {
+    public boolean isTrusted() {
         return false;
     }
 
     @Override
-    default int compare(A first, A second) {
+    public int compare(A first, A second) {
         return ((Comparable) first).compareTo(second);
     }
 
@@ -583,7 +583,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      * @return if the first and second arguments are equal to each other
      * @see Object#equals(Object)
      */
-    default boolean equals(A first, A second) {
+    public boolean equals(A first, A second) {
         return Objects.equals(first, second);
     }
 
@@ -598,7 +598,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      * @see Object#hashCode
      * @throws NullPointerException if the provided object is null
      */
-    default int hashCode(@NotNull A o, int seed) {
+    public int hashCode(@NotNull A o, int seed) {
         return DataIO.intHash(o.hashCode() + seed);
     }
 
@@ -607,7 +607,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      *
      * @return
      */
-    default boolean needsAvailableSizeHint() {
+    public boolean needsAvailableSizeHint() {
         return false;
     }
 
@@ -620,7 +620,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      * @return the de-serialized content of the given long
      * @throws IOException in case of an I/O error
      */
-    default A deserializeFromLong(long input, int available) throws IOException {
+    public A deserializeFromLong(long input, int available) throws IOException {
         if (CC.PARANOID && available < 0 || available > 8) {
             throw new AssertionError();
         }
@@ -630,7 +630,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
     }
 
     /** Creates binary copy of given object. If the datatype is immutable the same instance might be returned */
-    default A clone(A value) throws IOException {
+    public A clone(A value) throws IOException {
         DataOutput2 out = new DataOutput2();
         serialize(out, value);
         DataInput2 in2 = new DataInput2.ByteArray(out.copyBytes());
@@ -643,7 +643,7 @@ public interface Serializer<A /*extends Comparable<? super A>*/> extends Compara
      *
      * @return true if serializer is self contained, and does not call anything else
      */
-    default boolean isQuick(){
+    public boolean isQuick(){
         return false;
     }
 
